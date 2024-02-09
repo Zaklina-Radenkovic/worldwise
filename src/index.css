@@ -69,6 +69,8 @@ input:focus {
 }
 
 /*
+for easily inserting styles in component
+
 "importCSSModule": {
     "prefix": "csm",
     "scope": "javascript,typescript,javascriptreact",

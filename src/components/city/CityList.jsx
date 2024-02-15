@@ -2,8 +2,10 @@ import Spinner from "../spinner/Spinner";
 import CityItem from "./CityItem";
 import Message from "../message/Message";
 import styles from "./CityList.module.css";
+import { useCities } from "../../context/CitiesContext";
 
-function CityList({ cities, isLoading }) {
+function CityList() {
+  const { cities, isLoading } = useCities();
   if (isLoading) return <Spinner />;
 
   //if there is no city we get empty page. Instead we want to have smth like message

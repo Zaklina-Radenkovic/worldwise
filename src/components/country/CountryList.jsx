@@ -2,8 +2,10 @@ import Spinner from "../spinner/Spinner";
 import CountryItem from "./CountryItem";
 import Message from "../message/Message";
 import styles from "./CountryList.module.css";
+import { useCities } from "../../context/CitiesContext";
 
-function CountryList({ cities, isLoading }) {
+function CountryList() {
+  const { cities, isLoading } = useCities();
   if (isLoading) return <Spinner />;
 
   //if there is no Country we get empty page. Instead we want to have smth like message

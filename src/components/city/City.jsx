@@ -1,5 +1,10 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+// import Button from "../button/Button";
 import styles from "./City.module.css";
+import { useCities } from "../../context/CitiesContext";
+import Spinner from "../spinner/Spinner";
+import BackButton from "../button/BackButton";
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat("en", {
@@ -9,57 +14,64 @@ const formatDate = (date) =>
     weekday: "long",
   }).format(new Date(date));
 
+const flagemojiToPNG = (flag) => {
+  var countryCode = Array.from(flag, (codeUnit) => codeUnit.codePointAt())
+    .map((char) => String.fromCharCode(char - 127397).toLowerCase())
+    .join("");
+  return (
+    <img src={`https://flagcdn.com/24x18/${countryCode}.png`} alt="flag" />
+  );
+};
+
 function City() {
-  // TEMP DATA
-  const currentCity = {
-    cityName: "Lisbon",
-    emoji: "🇵🇹",
-    date: "2027-10-31T15:59:59.138Z",
-    notes: "My favorite city so far!",
-  };
+  const { getCity, currentCity, isLoading } = useCities();
+  const { id } = useParams();
+
+  useEffect(() => {
+    getCity(id);
+  }, [id]);
 
   const { cityName, emoji, date, notes } = currentCity;
 
-  const { id } = useParams();
-  return <h1>city {id}</h1>;
+  if (isLoading) return <Spinner />;
 
-  // return (
-  //   <div className={styles.city}>
-  //     <div className={styles.row}>
-  //       <h6>City name</h6>
-  //       <h3>
-  //         <span>{emoji}</span> {cityName}
-  //       </h3>
-  //     </div>
+  return (
+    <div className={styles.city}>
+      <div className={styles.row}>
+        <h6>City name</h6>
+        <h3>
+          <span>{emoji ? flagemojiToPNG(emoji) : ""}</span> {cityName}
+        </h3>
+      </div>
 
-  //     <div className={styles.row}>
-  //       <h6>You went to {cityName} on</h6>
-  //       <p>{formatDate(date || null)}</p>
-  //     </div>
+      <div className={styles.row}>
+        <h6>You went to {cityName} on</h6>
+        <p>{formatDate(date || null)}</p>
+      </div>
 
-  //     {notes && (
-  //       <div className={styles.row}>
-  //         <h6>Your notes</h6>
-  //         <p>{notes}</p>
-  //       </div>
-  //     )}
+      {notes && (
+        <div className={styles.row}>
+          <h6>Your notes</h6>
+          <p>{notes}</p>
+        </div>
+      )}
 
-  //     <div className={styles.row}>
-  //       <h6>Learn more</h6>
-  //       <a
-  //         href={`https://en.wikipedia.org/wiki/${cityName}`}
-  //         target="_blank"
-  //         rel="noreferrer"
-  //       >
-  //         Check out {cityName} on Wikipedia &rarr;
-  //       </a>
-  //     </div>
+      <div className={styles.row}>
+        <h6>Learn more</h6>
+        <a
+          href={`https://en.wikipedia.org/wiki/${cityName}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Check out {cityName} on Wikipedia &rarr;
+        </a>
+      </div>
 
-  //     <div>
-  //       <ButtonBack />
-  //     </div>
-  //   </div>
-  // );
+      <div>
+        <BackButton />
+      </div>
+    </div>
+  );
 }
 
 export default City;

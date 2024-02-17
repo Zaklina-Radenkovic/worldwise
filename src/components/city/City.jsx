@@ -5,6 +5,7 @@ import styles from "./City.module.css";
 import { useCities } from "../../context/CitiesContext";
 import Spinner from "../spinner/Spinner";
 import BackButton from "../button/BackButton";
+import { flagemojiToPNG } from "../../utils/flagemojiToPNG";
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat("en", {
@@ -13,15 +14,6 @@ const formatDate = (date) =>
     year: "numeric",
     weekday: "long",
   }).format(new Date(date));
-
-const flagemojiToPNG = (flag) => {
-  var countryCode = Array.from(flag, (codeUnit) => codeUnit.codePointAt())
-    .map((char) => String.fromCharCode(char - 127397).toLowerCase())
-    .join("");
-  return (
-    <img src={`https://flagcdn.com/24x18/${countryCode}.png`} alt="flag" />
-  );
-};
 
 function City() {
   const { getCity, currentCity, isLoading } = useCities();

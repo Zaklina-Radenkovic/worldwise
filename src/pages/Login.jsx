@@ -17,7 +17,6 @@ export default function Login() {
     e.preventDefault();
 
     if (email && password) login(email, password);
-    console.log(email, password);
   }
 
   useEffect(() => {
